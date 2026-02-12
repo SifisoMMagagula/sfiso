@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Angela 💕</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #ff9ecf, #ffc3e6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    text-align: center;
+    padding: 20px;
+    overflow-x: hidden;
+}
+
+.card {
+    background: white;
+    padding: 30px 25px;
+    border-radius: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    width: 100%;
+    max-width: 420px;
+    position: relative;
+    z-index: 2;
+    animation: fadeIn 0.6s ease;
+}
+
+h1 {
+    color: #ff4da6;
+    font-size: 22px;
+}
+
+h2 {
+    font-size: 20px;
+}
+
+p {
+    font-size: 16px;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    margin: 8px 0;
+    font-size: 16px;
+    border-radius: 25px;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.yes {
+    background-color: #ff4da6;
+    color: white;
+}
+
+.no {
+    background-color: #e0e0e0;
+}
+
+button:active {
+    transform: scale(0.96);
+}
+
+.hidden {
+    display: none;
+}
+
+.mute-btn {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    background: white;
+    border-radius: 50%;
+    padding: 10px;
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 3;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+img {
+    width: 100%;
+    border-radius: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+}
+
+.confetti {
+    position: fixed;
+    top: -10px;
+    width: 10px;
+    height: 10px;
+    animation: fall linear forwards;
+    z-index: 1;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(110vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+@keyframes fadeIn {
+    from {opacity: 0; transform: translateY(10px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+</style>
+</head>
+<body>
+
+<audio id="bgMusic" loop>
+    <source src="horsepower.mp3" type="audio/mpeg">
+</audio>
+
+<div class="mute-btn" onclick="toggleMusic()">🔊</div>
+
+<!-- Identity Screen -->
+<div class="card" id="identityCard">
+    <img src="me.jpg" alt="Angela">
+    <h1>Identity Verification 💕</h1>
+    <p>Are you Angela, the most absolutely stunning girlfriend ever? 😍</p>
+    <button onclick="confirmIdentity()">Yes, that's me 💖</button>
+</div>
+
+<!-- Valentine Question -->
+<div class="card hidden" id="valentineCard">
+    <h1>Sooooo… 🥺</h1>
+    <p>I know this is a little late…</p>
+    <p>But time kind of stops when I’m with you anyway ⏳💞</p>
+    <p>So technically… I’m right on time.</p>
+    <h2>Will you be my Valentine? 💖</h2>
+    <button class="yes" onclick="sayYes()">YES 💘</button>
+    <button class="no" onclick="sayNo()">No</button>
+    <p id="retryText"></p>
+</div>
+
+<!-- Celebration -->
+<div class="card hidden" id="celebrationCard">
+    <img src="Us.jpg" alt="Us Together">
+    <h1>She said YES!!! 🎉💖</h1>
+    <p>Angela, you just made me the happiest guy alive 🌹</p>
+    <p>Can't wait to spend Valentine's Day with you 💕</p>
+</div>
+
+<script>
+let noCount = 0;
+let musicStarted = false;
+const bgMusic = document.getElementById("bgMusic");
+
+function confirmIdentity() {
+    document.getElementById("identityCard").classList.add("hidden");
+    document.getElementById("valentineCard").classList.remove("hidden");
+
+    if (!musicStarted) {
+        bgMusic.play().catch(() => {});
+        musicStarted = true;
+    }
+}
+
+function toggleMusic() {
+    if (bgMusic.paused) {
+        bgMusic.play();
+        document.querySelector(".mute-btn").innerText = "🔊";
+    } else {
+        bgMusic.pause();
+        document.querySelector(".mute-btn").innerText = "🔇";
+    }
+}
+
+function sayNo() {
+    noCount++;
+    const retryText = document.getElementById("retryText");
+
+    const messages = [
+        "Are you sure, Angela? 🥺",
+        "Really sure?? 😢",
+        "What if I promise extra cuddles? 😌",
+        "I’ll let you pick dinner! 🍝",
+        "Okay but… I adore you though 😏",
+        "This button is clearly broken. Try YES 😌"
+    ];
+
+    retryText.innerText = messages[Math.min(noCount - 1, messages.length - 1)];
+}
+
+function sayYes() {
+    document.getElementById("valentineCard").classList.add("hidden");
+    document.getElementById("celebrationCard").classList.remove("hidden");
+    launchConfetti();
+}
+
+function launchConfetti() {
+    for (let i = 0; i < 80; i++) {
+        let confetti = document.createElement("div");
+        confetti.classList.add("confetti");
+        confetti.style.left = Math.random() * window.innerWidth + "px";
+        confetti.style.backgroundColor = `hsl(${Math.random()*360}, 100%, 50%)`;
+        confetti.style.animationDuration = (Math.random() * 2 + 2) + "s";
+        document.body.appendChild(confetti);
+    }
+}
+</script>
+
+</body>
+</html>
+
